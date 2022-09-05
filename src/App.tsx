@@ -1,39 +1,20 @@
-import { Container, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
-
-import AppNavBar from "./components/AppNavBarComponent";
-import TelaListaTarefas from "./screen/ScreenTarefas";
-import TelaListaUsuarios from "./screen/ScreenUsuarios";
+import { Route, Routes } from "react-router-dom";
+import { Error404 } from "./screen/Error404";
+import { Home } from './screen/Home'
+import { Login } from "./screen/Login";
+import { Posts } from "./screen/Posts";
+import { Tasks } from "./screen/Tasks";
 
 const App = (props: any) => {
-	const [users, setUsers] = useState([
-		{ id: 1, name: "Minora" },
-		{ id: 2, name: "Ataide" },
-	]);
-	const [loading, setLoading] = useState(true);
-	const [tela, setTela] = useState(1);
-	const telas = [
-		<TelaListaUsuarios data={users} loading={loading} />,
-		<TelaListaTarefas user={ {id: 2, name: "Ervin Howell"} } />,
-	];
 
-  const handleMudancaTela = (index: number) => {
-    setTela(index);
-  }
-
-	useEffect(() => {
-		fetch("https://jsonplaceholder.typicode.com/users/")
-			.then((response) => response.json())
-			.then((json) => {
-				setUsers(json);
-				setLoading(false);
-			});
-	});
 	return (
-		<Container maxWidth="sm">
-			<AppNavBar onChangeScreen={handleMudancaTela} />
-			{telas[tela]}
-		</Container>
+		<Routes>
+			<Route path="/home" element={(<Home />)} />
+			<Route path="/tasks/:id" element={(<Tasks />)} />
+			<Route path="/posts/:id" element={(<Posts />)} />
+			<Route path="/" element={<Login />} />
+			<Route path="*" element={<Error404 />} />
+		</Routes>
 	);
 };
 
